@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.sun.org.apache.bcel.internal.generic.SWITCH;
-
 public class Health {
     final static private float WIDTH = 80;
     Sprite[] healthSprite = {

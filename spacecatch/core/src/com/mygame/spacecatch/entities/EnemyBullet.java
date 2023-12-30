@@ -4,24 +4,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.mygame.spacecatch.tools.CollisionRect;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-
 public class EnemyBullet {
     float speed;
     private static Texture texture;
     Sprite sprite;
     float x,y;
+    int gameTime, speedBound=100, originSpeed=10;
     private static final int UPPERBOUND = 520;
+
     boolean side;
     public boolean remove = false;
     CollisionRect rect;
 
-    public EnemyBullet(){                           //!!!! ADD REMOVING BULLETS AFTER LEAVING SCREEN
+    public EnemyBullet(int gameTime){
+        this.gameTime = gameTime;
         texture = new Texture("bullet.png");
         sprite = new Sprite(texture);
         Random rand = new Random();
@@ -36,7 +34,13 @@ public class EnemyBullet {
             side = false;
         }
         y = rand.nextFloat(UPPERBOUND);
-        while(speed == 0) speed = rand.nextFloat(UPPERBOUND);
+        if(gameTime % 50 == 0){
+            speedBound +=50;
+            originSpeed +=10;
+        }
+        if(originSpeed >=200) originSpeed = 200;
+        if(speedBound >= 450) speedBound = 450;
+        speed = rand.nextFloat(originSpeed,speedBound);
     }
     public void Update(float deltaTime){
         //side of the screen, movement direction
@@ -51,7 +55,7 @@ public class EnemyBullet {
     }
     public void render(SpriteBatch batch){
         sprite.setPosition(x, y);
-        sprite.setScale(2);
+        sprite.setScale(2.5f);
         sprite.draw(batch);
     }
     public CollisionRect getCollisionRect(){

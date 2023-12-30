@@ -3,10 +3,12 @@ package com.mygame.spacecatch.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygame.spacecatch.SpaceCatch;
@@ -18,17 +20,23 @@ public class GameOverScreen implements Screen {
     private static final int BUTTON_HEIGHT = 50;
     SpaceCatch game;
     Texture gameOverImg;
+    Sprite backgroundSprite;
     Texture menuButton;
     Texture exitButton;
     Texture exitButtonActive;
     Texture menuButtonActive;
     BitmapFont scoreFont;
     int score, highScore;
+    Music menuMusic;
 
     public GameOverScreen(SpaceCatch game, int score){
         this.game = game;
         this.score = score;
         //Fonts & Textures
+        menuMusic = Gdx.audio.newMusic(Gdx.files.internal("musicmenu.mp3"));
+        menuMusic.isLooping();
+        menuMusic.play();
+        backgroundSprite = new Sprite(new Texture("background.png"));
         gameOverImg = new Texture("gameover.png");
         scoreFont = new BitmapFont(Gdx.files.internal("scorefont.fnt"));
         menuButton = new Texture("menu.png");
@@ -63,7 +71,7 @@ public class GameOverScreen implements Screen {
 
         //drawing
         game.batch.begin();
-
+        backgroundSprite.draw(game.batch);
         //Game Over text
         game.batch.draw(gameOverImg,
                 (int)(Gdx.graphics.getWidth() / 2) - (int)(GAMEOVER_WIDTH / 2) ,
@@ -138,6 +146,7 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        menuMusic.dispose();
+        Gdx.input.setInputProcessor(null);
     }
 }

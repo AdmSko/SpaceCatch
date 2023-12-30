@@ -21,14 +21,13 @@ public class Question {
         while(x<texture.getWidth())x = rand.nextInt((int)(Gdx.graphics.getWidth()-sprite.getWidth()));
         y = rand.nextFloat(UPPERBOUND);
     }
-
     public void Update (float deltaTime){
 
         this.rect = new CollisionRect(x, y, (int)sprite.getWidth(), (int)sprite.getHeight());
     }
     public void render(SpriteBatch batch){
         sprite.setPosition(x, y);
-        //sprite.setScale(2);
+        sprite.setScale(1.3f);
         sprite.draw(batch);
     }
     public CollisionRect getCollisionRect(){
