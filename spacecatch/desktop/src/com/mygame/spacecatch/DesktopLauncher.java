@@ -2,10 +2,15 @@ package com.mygame.spacecatch;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.mygame.spacecatch.SpaceCatch;
 
-// Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
+/**
+ * Class that works as a desktop launcher of the game, required by LibGdx as a framework
+ */
 public class DesktopLauncher {
+	/**
+	 * main method for desktop usage, creates game object
+	 * @param arg array of strings of Java string class
+	 */
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);

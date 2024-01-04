@@ -6,29 +6,60 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.mygame.spacecatch.screens.MainGameScreen;
 import com.mygame.spacecatch.tools.CollisionRect;
 
 
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Class contains content of the question after player picks it up
+ */
 public class QuestionContent {
-
+    /** location of answers */
     public ArrayList<Vector2>location;
+    /** fonts for question and answers */
     BitmapFont questionFont,qstnFnt;
-    int a, b, goodAnswer, badAnswer1, badAnswer2, whichImg, playerWidth, playerHeight;
+    /** variables for question */
+    int a, b;
+    /** possible answers */
+    int goodAnswer, badAnswer1, badAnswer2;
+    /** variable for picking proper img */
+    int whichImg;
+    /** width and height of player texture - for collision check */
+    int playerWidth, playerHeight;
+    /** X, Y player position - for collision check */
     float playerX, playerY;
+    /** question and menu button width and height */
     private static final int QSTN_WIDTH =200, QSTN_HEIGHT = 50, MENUINGAMEWITDH = 100, MENUINGAMEHEIGHT = 40;
+    /** X, Y position of menu button */
     float menuInGameX,menuInGameY;
+    /** variable for random question type choice */
     public int questionType;
+    /** Object of CollisionRect class to check collision of the object with a player */
     CollisionRect rect;
+    /** glyph layouts of question and answers */
     public GlyphLayout question,goodAnswerGl,badAnswer1Gl,badAnswer2Gl,toSkip;
+    /** List of glyph layouts */
     ArrayList <GlyphLayout> glyphLayoutList;
+    /** texture of electronic questions */
     Texture resistor, coil, diode, cell, capacitor;
+    /** list of textures */
     ArrayList<Texture> texturesList;
+    /** List of possible answers */
     ArrayList<String> possibleAnswers = new ArrayList<>();
+    /** maximum height */
     private static final int MAXY =Gdx.graphics.getHeight()-80;
+
+    /**
+     * Constructor that sets position of question content
+     * @param playerX X-axis position of the player
+     * @param playerY Y-axis position of the player
+     * @param playerWidth Player sprite width
+     * @param playerHeight Player sprite height
+     * @param menuInGameX Menu button X-axis position
+     * @param menuInGameY Menu button Y-axis position
+     */
     public QuestionContent(float playerX,float playerY, int playerWidth, int playerHeight, float menuInGameX, float menuInGameY){
         this.playerX = playerX;
         this.playerY = playerY;
@@ -154,35 +185,20 @@ public class QuestionContent {
                 location.get(i).y = rand.nextFloat(MAXY);
             }
         }
-        /*for(int i = 1; i<4; i++) {          //-----------------przez te warunki prawdopodobnie czasem sie crashuje ?!?!?!?!?
-            //checking X location
-            while (location.get(i).x <= glyphLayoutList.get(i).width
-            || location.get(i).x >= Gdx.graphics.getWidth() - glyphLayoutList.get(i).width
-            || (location.get(1).x < location.get(2).x + glyphLayoutList.get(2).width && location.get(1).x + glyphLayoutList.get(1).width > location.get(2).x)
-            || (location.get(1).x < location.get(3).x + glyphLayoutList.get(3).width && location.get(1).x + glyphLayoutList.get(1).width > location.get(3).x)
-            || (location.get(2).x < location.get(3).x + glyphLayoutList.get(3).width && location.get(2).x + glyphLayoutList.get(2).width > location.get(3).x)
-            || (location.get(i).x < playerX + playerWidth && location.get(i).x + glyphLayoutList.get(i).width > playerX)) {
-                location.get(i).x = rand.nextFloat(Gdx.graphics.getWidth());
-                if (location.get(3).x < location.get(2).x + glyphLayoutList.get(2).width && location.get(3).x + glyphLayoutList.get(3).width > location.get(2).x)
-                    location.get(3).x = rand.nextFloat(Gdx.graphics.getWidth());
-            }
-            //checking Y location
-            while (location.get(i).y <= glyphLayoutList.get(i).height
-            || location.get(i).y >= MAXY - glyphLayoutList.get(i).height
-            || (location.get(1).y < location.get(2).y + glyphLayoutList.get(2).height && location.get(1).y + glyphLayoutList.get(1).height > location.get(2).y)
-            || (location.get(1).y < location.get(3).y + glyphLayoutList.get(3).height && location.get(1).y + glyphLayoutList.get(1).height > location.get(3).y)
-            || (location.get(2).y < location.get(3).y + glyphLayoutList.get(3).height && location.get(2).y + glyphLayoutList.get(2).height > location.get(3).y)
-            || (location.get(i).y < playerY + playerHeight && location.get(i).y + glyphLayoutList.get(i).height > playerY)) {
-                location.get(i).y = rand.nextFloat(MAXY);
-                if(location.get(3).y < location.get(2).y + glyphLayoutList.get(2).height && location.get(3).y + glyphLayoutList.get(3).height > location.get(2).y)
-                    location.get(3).y = rand.nextFloat(MAXY);
-            }
-        }*/
     }
+    /**
+     * Method updates collision object
+     *
+     * @param deltaTime Time between the start of the previous and the start of the current call
+     */
     public void Update(float deltaTime){
             //checking collision with player of every possible answer
                 this.rect = new CollisionRect(location, glyphLayoutList);
     }
+    /**
+     * Method that renders answers
+     * @param batch Object of a SpriteBatch class, contains a batch of sprites to draw
+     */
     public void render(SpriteBatch batch){
         //draw question & answers
         switch (questionType){
@@ -201,10 +217,19 @@ public class QuestionContent {
             default:break;
         }
     }
+    /**
+     * Returns collision with object
+     * @return object of CollisionRect, checking collision with the object
+     */
     public CollisionRect getCollisionRect(){
         return rect;
     }
-    //additional method to support collisions of answers
+
+    /**
+     * Additional method to support easier collision check between answers
+     * @param currentIndex Index of the for loop statement
+     * @return Collision return, true - collides, false - doesn't collide
+     */
     private boolean checkObjectCollisions(int currentIndex) {
         for (int j = 1; j < 4; j++) {
             if (j != currentIndex) {
@@ -218,6 +243,11 @@ public class QuestionContent {
         }
         return false; //no collision
     }
+    /**
+     * Additional method to support easier collision check with player
+     * @param currentIndex Index of the for loop statement
+     * @return Collision return, true - collides, false - doesn't collide
+     */
     //additional method to support collisions of answers
     private boolean checkPlayerCollision(int currentIndex) {
         if (location.get(currentIndex).x < playerX + playerWidth
@@ -228,6 +258,11 @@ public class QuestionContent {
         }
         return false; //no collision
     }
+    /**
+     * Additional method to support easier collision check with Menu Button
+     * @param currentIndex Index of the for loop statement
+     * @return Collision return, true - collides, false - doesn't collide
+     */
     //additional method to support collisions of answers
     private boolean checkMenuButtonCollision(int currentIndex){
         if (location.get(currentIndex).x < menuInGameX + MENUINGAMEWITDH

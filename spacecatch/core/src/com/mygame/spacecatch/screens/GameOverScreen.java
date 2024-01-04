@@ -13,22 +13,47 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygame.spacecatch.SpaceCatch;
 
+/**
+ * This class contains visualization of the game over screen, buttons and their behaviour, score and high score display, implements Screen.
+ *
+ */
 public class GameOverScreen implements Screen {
+    /** Game Over img width */
     private static final int GAMEOVER_WIDTH = 400;
+    /** Game Over img height */
     private static final int GAMEOVER_HEIGHT = 60;
+    /** button width */
     private static final int BUTTON_WIDTH = 200;
+    /** button height */
     private static final int BUTTON_HEIGHT = 50;
+    /** instance of the game */
     SpaceCatch game;
+    /** game over button texture  */
     Texture gameOverImg;
+    /** background sprite  */
     Sprite backgroundSprite;
+    /** menu button texture  */
     Texture menuButton;
+    /** exit button texture  */
     Texture exitButton;
+    /** exit button texture when cursor hovered over  */
     Texture exitButtonActive;
+    /** menu button texture when cursor hovered over  */
     Texture menuButtonActive;
+    /** font of score   */
     BitmapFont scoreFont;
-    int score, highScore;
+    /** score value */
+    int score;
+    /** high score value */
+    int highScore;
+    /** menu music */
     Music menuMusic;
 
+    /**
+     * This method is a constructor of game over screen which takes care of creating new objects, variables and loading file.
+     * @param game Instance of the game.
+     * @param score Score of the player
+     */
     public GameOverScreen(SpaceCatch game, int score){
         this.game = game;
         this.score = score;
@@ -58,6 +83,11 @@ public class GameOverScreen implements Screen {
 
     }
 
+    /**
+     * Method for rendering/drawing game over screen, textures, buttons and updating high score or score.
+     *
+     * @param delta Time between the start of the previous and the start of the current call
+     */
     @Override
     public void render(float delta) {
         int menux = Gdx.graphics.getWidth()/4 -BUTTON_WIDTH/2;
@@ -95,7 +125,6 @@ public class GameOverScreen implements Screen {
                     BUTTON_WIDTH,
                     BUTTON_HEIGHT);
                 if(Gdx.input.isTouched()) {
-                    System.out.println("Co sie odpierdala");   //oj kurwa zagwozdka, tu na pewno wchodzi i jest super, ale w polowie guzik wypierdala a w polowie nie, kiedys cos sie zrobi
                     this.dispose();
                     game.batch.end();
                     game.setScreen(new MainMenuScreen(game));
@@ -143,7 +172,9 @@ public class GameOverScreen implements Screen {
     public void hide() {
 
     }
-
+    /**
+     * Method for disposing used objects, screen.
+     */
     @Override
     public void dispose() {
         menuMusic.dispose();

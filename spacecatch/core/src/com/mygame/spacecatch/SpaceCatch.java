@@ -1,21 +1,19 @@
 package com.mygame.spacecatch;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.mygame.spacecatch.screens.GameOverScreen;
-import com.mygame.spacecatch.screens.MainGameScreen;
 import com.mygame.spacecatch.screens.MainMenuScreen;
-import org.w3c.dom.Text;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * Class that implements Game and is used as a first class after starting the game, sets creen to main menu screen
+ * Uses default constructor
+ */
 public class SpaceCatch extends Game {
+	/**	Width of the screen	*/
 	public static final int WIDTH = 600;
+	/**	Height of the screen */
 	public static final int HEIGHT = 600;
+	/**	batch of screens that is used to draw everything at the same time */
 	public SpriteBatch batch;
 
 	@Override

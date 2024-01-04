@@ -18,32 +18,73 @@ import com.mygame.spacecatch.tools.CollisionRect;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * This class contains visualization of the main game screen, player movement, score mechanic and is also responsible for the appearance of projectiles. Implements Screen
+ *
+ */
 public class MainGameScreen implements Screen {
-    private float SPEED = 500;
+    /** music objects */
     Music mainMusic,playerHit,shotBullet,badAnsw,goodAnsw;
+    /** in game time in seconds */
     private float timeSeconds = 0f;
+    /** creating new question timer */
     private float questiontimer = 0f;
+    /** period for timeSeconds timer */
     private static final float period = 1f;
-    private static final float periodQuestion = 10f, ACCELERATION = 50f, MAXVELOCITY=50f;
+    /** period for questiontimer - when new question should appear */
+    private static final float periodQuestion = 10f;
+    /** velocity and acceleration of player movement */
     public Vector2 velocity, acceleration;
+    /** menu width, height and max height */
     private static final int MENUINGAMEWITDH = 100, MENUINGAMEHEIGHT = 40, MAX_HEIGHT = 525;
-    private boolean isQuestionPresent = true, isPicked;
+    /** check if question is present */
+    private boolean isQuestionPresent = true;
+    /** check if question is picked */
+    private boolean isPicked;
+    /** textures of player, menu button, background, upper background and logo */
     Texture img, menuInGameImg, background, infoBackground, logo;
-    float x,y,menuInGameX,menuInGameY,periodBullet=5f,timeBullet, periodBullet1=10f,timeBullet1, periodBullet2=6f, timeBullet2;
-    Sprite sprite,backgroundSprite;
+    /** X, Y position of a player */
+    float x,y;
+    /** X, Y menu position */
+    float menuInGameX,menuInGameY;
+    /** timers for bullets */
+    float periodBullet=5f,timeBullet, periodBullet1=10f,timeBullet1, periodBullet2=6f, timeBullet2;
+    /** Player sprite */
+    Sprite sprite;
+    /** background img */
+    Sprite backgroundSprite;
+    /** instance of the game */
     SpaceCatch game;
+    /** List of enemy bullets */
     ArrayList<EnemyBullet> enemyBullets;
+    /** List of enemy bullets(1) */
     ArrayList<EnemyBullet1> enemyBullets1;
+    /** List of enemy bullets(2) */
     ArrayList<EnemyBullet2> enemyBullets2;
+    /** question content object */
     QuestionContent questionContent;
+    /** question object */
     Question question;
+    /** health mechanic object */
     Health hpCheck;
+    /** Object of CollisionRect class to get player collision */
     CollisionRect playerRect;
+    /** variable contains current health */
     int health; //0 = dead, 6 = full health
-    int score = 0,gameTime=1;
+    /** score variable */
+    int score = 0;
+    /** game time variable */
+    int gameTime=1;
+    /** checks if answer is good or bad */
     int goodOrBadAnswer;
+    /** font of the score */
     BitmapFont scoreFont;
 
+    /**
+     * This method is a constructor of the main game screen which takes care of creating new objects and variables.
+     *
+     * @param game Instance of the game.
+     */
     public MainGameScreen(SpaceCatch game){
         this.game = game;
         mainMusic = Gdx.audio.newMusic(Gdx.files.internal("musicgame.mp3"));
@@ -82,6 +123,11 @@ public class MainGameScreen implements Screen {
 
     }
 
+    /**
+     * Method for rendering/drawing main game screen, textures and checking for changes like time, player position.
+     *
+     * @param delta Time between the start of the previous and the start of the current call
+     */
     @Override
     public void render(float delta) {
             Random rand = new Random();
@@ -196,7 +242,6 @@ public class MainGameScreen implements Screen {
                 //if player collides with answer
                 if (goodOrBadAnswer != 0) {
                     isPicked = false;
-                    goodAnsw.play();
                     isQuestionPresent = false;                  // start timer for another question event
                     if(goodOrBadAnswer == 1) {
                         goodAnsw.play();
@@ -291,11 +336,22 @@ public class MainGameScreen implements Screen {
 
     }
 
+    /**
+     * Method for disposing used objects, screen.
+     */
     @Override
     public void dispose() {
         mainMusic.dispose();
+        playerHit.dispose();
+        shotBullet.dispose();
+        badAnsw.dispose();
+        goodAnsw.dispose();
         Gdx.input.setInputProcessor(null);
     }
+
+    /**
+     * Method for handling player input
+     */
     private void handleInput(){
         acceleration.set(0,0);
         if(Gdx.input.isKeyPressed(Input.Keys.A)) acceleration.x = -1;
@@ -303,6 +359,10 @@ public class MainGameScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.W)) acceleration.y = 1;
         if (Gdx.input.isKeyPressed(Input.Keys.S)) acceleration.y = -1;
     }
+
+    /**
+     * Method incorporating player movement mechanics
+     */
     private void move(){
         // Adjust velocity based on acceleration
         velocity.add(acceleration.x, acceleration.y);
